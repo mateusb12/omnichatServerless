@@ -11,7 +11,7 @@ def create_order(request):
     if request is None or request.method != 'POST':
         return 'Only POST requests are accepted', 405
     try:
-        data = request.get_json(force=True)
+        data = request.json
     except JSONDecodeError as e:
         return f'Invalid JSON payload: {e}', 400
 
@@ -43,7 +43,7 @@ def create_order(request):
         return response, 400
 
     result: bool = fo.createOrder(order_data=data)
-    return createResponseWithAntiCorsHeaders(f"Successfully created order with unique ID [{result}]")
+    return createResponseWithAntiCorsHeaders(result)
 
 
 def get_order_handler(request):
@@ -72,7 +72,7 @@ def read_order_by_id(order_id):
 def update_order(request):
     if request is None or request.method != 'PUT':
         return 'Only PUT requests are accepted', 405
-    url_param = get_url_param()
+    url_param = request.headers.get('url_parameter')
     if url_param is None:
         return "'url_parameter' cannot be empty. There was no url parameter in the request", 400
     try:
@@ -90,7 +90,7 @@ def update_order(request):
 def delete_order(request):
     if request is None or request.method != 'DELETE':
         return 'Only DELETE requests are accepted', 405
-    url_param = get_url_param()
+    url_param = request.headers.get('url_parameter')
     if url_param is None:
         return "'url_parameter' cannot be empty. There was no url parameter in the request", 400
     order_id = url_param

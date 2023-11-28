@@ -14,7 +14,15 @@ def __crud_function_redirect(operation_dict, request):
     path_segments = request.path.split('/')
     operation = path_segments[-1]
     url_parameter = None
+    if request.method == 'OPTIONS':
+        headers = {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Max-Age": "3600",
+        }
 
+        return '', 204, headers
     if operation not in operation_dict:
         if len(path_segments) > 2 and path_segments[-2] in operation_dict:
             operation = path_segments[-2]
@@ -45,6 +53,7 @@ def conversation_handler(request):
         "get_all_conversations": ("GET", get_all_conversations),
         "update_conversation": ("PUT", update_conversation),
         "update_multiple_conversations": ("PUT", update_multiple_conversations)
+
     }
 
     return __crud_function_redirect(operation_dict, request)
@@ -86,6 +95,9 @@ def __main():
     # response1 = user_handler(mock_request1)
     # print(response1)
 
+    headers = {
+        "Content-Type": "application/json"}
+
     # Mocked data for a read operation with a user_id
     # body = {"address": "Rua da Paz 4987", "cpf": "14568598577", "name": "Ednaldo Pereira",
     #         "phoneNumber": "+558597648593"}
@@ -93,22 +105,20 @@ def __main():
     # response2 = user_handler(mock_request2)
     # print(response2)
 
-    # mock_request3 = MockRequest(path="/order_handler/read", method="GET")
-    # response3 = user_handler(mock_request3)
-    # print(response3)
+    mock_request3 = MockRequest(path="/order_handler/create", method="POST", headers=headers, json_data=mock_order_1)
+    response3 = order_handler(mock_request3)
+    print(response3)
 
 
     # mock_request4 = MockRequest(path="/order_handler/read/30_Oct_2023_10_54_31_583", method="GET")
     # response4 = order_handler(mock_request3)
     # print(response4)
 
-    # mock_request5 = MockRequest(path="/order_handler/create", method="POST", json_data=mock_order_2, headers={'Content-Type': 'application/json'})
+    # mock_request5 = MockRequest(path="/order_handler/delete/2", method="DELETE", json_data=mock_order_2, headers={'Content-Type': 'application/json'})
     # response5 = order_handler(mock_request5)
     # print(response5)
 
-    mock_request6 = MockRequest(path="/conversation_handler/update_multiple_conversations", method="PUT", json_data=update_mult_conv_mock, headers={'Content-Type': 'application/json'})
-    response6 = conversation_handler(mock_request6)
-    print(response6)
+
 
 
 if __name__ == '__main__':
