@@ -82,7 +82,7 @@ def budget_alert_endpoint(request=None):
 
 def __main():
     # Mocked data for a read operation without a user_id.
-    # mock_request1 = MockRequest(path="/user_handler/read", method="GET")
+    # mock_request1 = MockRequest(path="/user_handler/read", method="GET") !
     # response1 = user_handler(mock_request1)
     # print(response1)
 
