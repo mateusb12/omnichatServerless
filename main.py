@@ -7,7 +7,7 @@ from cruds.conversation_crud import get_all_conversations, update_conversation, 
 from cruds.order_crud import delete_order, update_order, get_order_handler, create_order
 from cruds.user_crud import create_user, get_all_users, update_user, delete_user
 from factory.core_instantiations import ft
-from utils.mocks import MockRequest, mock_order_1, mock_order_2, update_mult_conv_mock
+from utils.mocks import MockRequest, mock_order_1
 
 
 def __crud_function_redirect(operation_dict, request):
@@ -29,7 +29,7 @@ def __crud_function_redirect(operation_dict, request):
             url_parameter = path_segments[-1]
         else:
             valid_operations = '\n → '.join(operation_dict.keys())
-            return f'{operation} is an invalid operation. Valid operations are \n →{valid_operations}', 400
+            return f'{operation} is an invalid operation! Valid operations are \n →{valid_operations}', 400
 
     required_method, operation_func = operation_dict[operation]
     if request.method != required_method:
