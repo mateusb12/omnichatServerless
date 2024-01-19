@@ -5,11 +5,12 @@ import requests
 BASE_URL = "https://us-central1-middleware-omnichat.cloudfunctions.net"
 GET_ALL_CONVERSATIONS = "conversation_handler/get_all_conversations"
 GET_ALL_ORDERS = "order_handler/read"
+GET_ALL_USERS = "user_handler/read"
 
 
 def test_all_conversations():
     base = BASE_URL
-    suffix = GET_ALL_ORDERS
+    suffix = GET_ALL_USERS
     url = f"{base}/{suffix}"
     response = requests.get(url)
     response_body = json.loads(response.text)
