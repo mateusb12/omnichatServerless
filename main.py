@@ -1,5 +1,8 @@
 import json
 
+import flask
+import requests
+
 from costs.alerts.handle_alerts import (decode_dict_from_google_cloud_request,
                                         extract_meaningful_info_from_decoded_dict,
                                         send_cloud_warning_email)
@@ -105,10 +108,13 @@ def __main():
     # response2 = user_handler(mock_request2)
     # print(response2)
 
-    mock_request3 = MockRequest(path="/order_handler/create", method="POST", headers=headers, json_data=mock_order_1)
+    mock_request3 = MockRequest(path="/order_handler/read", method="GET", headers=headers, json_data=mock_order_1)
     response3 = order_handler(mock_request3)
-    print(response3)
+    print(response3.data.decode('utf-8'))
 
+    # mock_request3 = MockRequest(path="/conversation_handler/get_all_conversations", method="GET", headers=headers)
+    # response3: flask.Response = conversation_handler(mock_request3)
+    # print(response3.data.decode('utf-8'))
 
     # mock_request4 = MockRequest(path="/order_handler/read/30_Oct_2023_10_54_31_583", method="GET")
     # response4 = order_handler(mock_request3)
@@ -117,8 +123,6 @@ def __main():
     # mock_request5 = MockRequest(path="/order_handler/delete/2", method="DELETE", json_data=mock_order_2, headers={'Content-Type': 'application/json'})
     # response5 = order_handler(mock_request5)
     # print(response5)
-
-
 
 
 if __name__ == '__main__':

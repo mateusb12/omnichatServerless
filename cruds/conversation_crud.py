@@ -7,8 +7,6 @@ from utils.corsBlocker import createResponseWithAntiCorsHeaders
 
 
 def get_all_conversations(request=None):
-    if request.method != 'GET':
-        return 'Only GET requests are accepted', 405
     conversations = fcm.getAllConversations()
     arrayOfConversations = list(conversations.values()) if conversations is not None else ["None"]
     log_memory_usage()
