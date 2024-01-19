@@ -29,7 +29,7 @@ def __crud_function_redirect(operation_dict, request):
             url_parameter = path_segments[-1]
         else:
             valid_operations = '\n → '.join(operation_dict.keys())
-            return f'{operation} is an invalid operation! Valid operations are \n →{valid_operations}', 400
+            return f'{operation} is an invalid operation. Valid operations are \n →{valid_operations}', 400
 
     required_method, operation_func = operation_dict[operation]
     if request.method != required_method:
