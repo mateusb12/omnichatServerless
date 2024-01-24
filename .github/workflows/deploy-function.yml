@@ -60,6 +60,19 @@ jobs:
           CURRENT_BUCKET=pizza_code_bucket
           echo "CURRENT_BUCKET=$CURRENT_BUCKET" >> $GITHUB_ENV
 
+      - name: Deploy Fulfillment Cloud Function
+        run: |
+          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
+          gcloud functions deploy webhook \
+            --source=. \
+            --runtime=python39 \
+            --entry-point=fulfillment_endpoint \
+            --memory 128MB \
+            --trigger-http \
+            --allow-unauthenticated \
+            --stage-bucket=$CURRENT_BUCKET \
+            --update-env-vars=$UPDATE_ENV_VARS_ARG
+
       - name: Deploy conversation_handler Cloud Function
         run: |
           echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"

@@ -1,0 +1,52 @@
+{
+  "Pizzas": [
+    {
+      "nome": "Calabresa",
+      "tamanho": "Grande",
+      "preço": 51.50
+    },
+    {
+      "nome": "Frango",
+      "tamanho": "Grande",
+      "preço": 52.80
+    },
+    {
+      "nome": "Portuguesa",
+      "tamanho": "Grande",
+      "preço": 49.00
+    },
+    {
+      "nome": "Margherita",
+      "tamanho": "Média",
+      "preço": 45.80
+    },
+    {
+      "nome": "Quatro Queijos",
+      "tamanho": "Grande",
+      "preço": 52.30
+    },
+    {
+      "nome": "Pepperoni",
+      "tamanho": "Grande",
+      "preço": 51.99
+    }
+  ],
+  "Bebidas": [
+    {
+      "nome": "Coca-cola",
+      "tamanho": "300ml",
+      "preço": 5.99
+    },
+    {
+      "nome": "Guaraná",
+      "tamanho": "300ml",
+      "preço": 4.99
+    },
+    {
+      "nome": "Suco de laranja",
+      "tamanho": "500ml",
+      "preço": 6.50
+    }
+  ],
+  "HorárioDeFuncionamento": "17h às 22h"
+}

@@ -9,6 +9,7 @@ from costs.alerts.handle_alerts import (decode_dict_from_google_cloud_request,
 from cruds.conversation_crud import get_all_conversations, update_conversation, update_multiple_conversations
 from cruds.order_crud import delete_order, update_order, get_order_handler, create_order
 from cruds.user_crud import create_user, get_all_users, update_user, delete_user
+from dialogflowFolder.core_intent_processing import fulfillment_processing
 from factory.core_instantiations import ft
 from utils.mocks import MockRequest, mock_order_1
 
@@ -87,6 +88,11 @@ def budget_alert_endpoint(request=None):
     final_string = send_cloud_warning_email(costIntervalTime, moneySpent, percentage_achieved)
     ft.disable_firebase()
     return final_string, 200
+
+
+def fulfillment_endpoint(request=None):
+    request_content = request.json
+    return fulfillment_processing(request_content)
 
 
 def __main():

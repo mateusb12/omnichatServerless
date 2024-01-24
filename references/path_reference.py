@@ -14,6 +14,10 @@ def getTestPlanCsvFolderPath() -> Path:
     return getMainFolderPath() / 'requestTests/testPlans'
 
 
+def getSpeisekartePath() -> Path:
+    return getMainFolderPath() / "data/files/speisekarte.json"
+
+
 def __main():
     sdkFile = getFirebaseSDKPath()
     existingSdkFile = sdkFile.exists()

@@ -1,3 +1,4 @@
+from dialogflowFolder.menu_handler import MenuItemHandler
 from firebaseAuthentication.auth_factory import FirebaseConnectionFactory
 from firebaseAuthentication.firebase_rules.firebase_toggler import FirebaseToggler
 from factory.global_object import GlobalObject
@@ -12,3 +13,4 @@ fu = FirebaseUser(fc)
 fo = FirebaseOrder(fc)
 ft = FirebaseToggler()
 g = GlobalObject()
+menuHandler = MenuItemHandler()
