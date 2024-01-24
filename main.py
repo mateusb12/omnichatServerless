@@ -11,7 +11,8 @@ from cruds.order_crud import delete_order, update_order, get_order_handler, crea
 from cruds.user_crud import create_user, get_all_users, update_user, delete_user
 from dialogflowFolder.core_intent_processing import fulfillment_processing
 from factory.core_instantiations import ft
-from utils.mocks import MockRequest, mock_order_1
+from mockTesting.mock_utils.mock_templates import mock_order_1
+from mockTesting.mock_utils.mock_object import MockRequest
 
 
 def __crud_function_redirect(operation_dict, request):
@@ -102,7 +103,8 @@ def __main():
     # print(response1)
 
     headers = {
-        "Content-Type": "application/json"}
+        "Content-Type": "application/json"
+    }
 
     # Mocked data for a read operation with a user_id
     # body = {"address": "Rua da Paz 4987", "cpf": "14568598577", "name": "Ednaldo Pereira",
