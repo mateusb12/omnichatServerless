@@ -2,8 +2,8 @@ import datetime
 import uuid
 from typing import List
 
-from authentication.abstraction.abstract_connection import AbstractFirebaseConnection
-from authentication.auth_factory import FirebaseConnectionFactory
+from firebaseAuthentication.abstraction.abstract_connection import AbstractFirebaseConnection
+from firebaseAuthentication.auth_factory import FirebaseConnectionFactory
 from firebaseFolder.firebase_core_wrapper import FirebaseWrapper
 from utils.firebase_utils import organizeSingleMessageData
 

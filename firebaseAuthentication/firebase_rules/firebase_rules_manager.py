@@ -3,8 +3,8 @@ import requests
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.service_account import Credentials
 
-from authentication.sdk_auth.private_key_issue_solver import fix_private_key
-from authentication.sdk_auth.sdk_dict import getSdkDict
+from firebaseAuthentication.sdk_auth.private_key_issue_solver import fix_private_key
+from firebaseAuthentication.sdk_auth.sdk_dict import getSdkDict
 from utils.firebase_utils import convert_string_to_dict
 
 

@@ -56,9 +56,7 @@ def conversation_handler(request):
         "get_all_conversations": ("GET", get_all_conversations),
         "update_conversation": ("PUT", update_conversation),
         "update_multiple_conversations": ("PUT", update_multiple_conversations)
-
     }
-
     return __crud_function_redirect(operation_dict, request)
 
 
@@ -69,7 +67,6 @@ def order_handler(request):
         "update": ("PUT", update_order),
         "delete": ("DELETE", delete_order)
     }
-
     return __crud_function_redirect(operation_dict, request)
 
 

@@ -1,7 +1,7 @@
 from typing import Any
 from firebase_admin import db
-from authentication.abstraction.abstract_connection import AbstractFirebaseConnection
-from authentication.sdk_auth.firebase_sdk_auth import get_firebase_app
+from firebaseAuthentication.abstraction.abstract_connection import AbstractFirebaseConnection
+from firebaseAuthentication.sdk_auth.firebase_sdk_auth import get_firebase_app
 from utils.patterns import singleton
 
 

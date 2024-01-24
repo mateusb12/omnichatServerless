@@ -1,5 +1,5 @@
-from authentication.http_auth.firebase_http_connection import FirebaseHTTPConnection
-from authentication.sdk_auth.firebase_sdk_connection import FirebaseSDKConnection
+from firebaseAuthentication.http_auth.firebase_http_connection import FirebaseHTTPConnection
+from firebaseAuthentication.sdk_auth.firebase_sdk_connection import FirebaseSDKConnection
 
 
 class FirebaseConnectionFactory:

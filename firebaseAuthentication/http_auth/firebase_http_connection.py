@@ -1,8 +1,8 @@
 import os
 import requests
 from dotenv import load_dotenv
-from authentication.abstraction.abstract_connection import AbstractFirebaseConnection
-from authentication.http_auth.firebase_http_auth import get_id_token
+from firebaseAuthentication.abstraction.abstract_connection import AbstractFirebaseConnection
+from firebaseAuthentication.http_auth.firebase_http_auth import get_id_token
 
 
 class FirebaseHTTPConnection(AbstractFirebaseConnection):

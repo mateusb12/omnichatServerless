@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from firebase_admin import credentials, initialize_app, App
 
-from authentication.firebase_rules.firebase_rules_manager import get_service_account_access_token, fetch_firebase_rules
-from authentication.sdk_auth.sdk_dict import getSdkDict
+from firebaseAuthentication.firebase_rules.firebase_rules_manager import get_service_account_access_token, fetch_firebase_rules
+from firebaseAuthentication.sdk_auth.sdk_dict import getSdkDict
 
 load_dotenv()
 

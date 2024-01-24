@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 
-from authentication.firebase_rules.firebase_rules_manager import get_service_account_access_token, \
+from firebaseAuthentication.firebase_rules.firebase_rules_manager import get_service_account_access_token, \
     update_firebase_rules, fetch_firebase_rules
-from authentication.firebase_rules.pre_made_rules import get_enable_firebase_rule, get_disable_firebase_rule
+from firebaseAuthentication.firebase_rules.pre_made_rules import get_enable_firebase_rule, get_disable_firebase_rule
 
 
 class FirebaseToggler:

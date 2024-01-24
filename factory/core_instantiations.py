@@ -1,5 +1,5 @@
-from authentication.auth_factory import FirebaseConnectionFactory
-from authentication.firebase_rules.firebase_toggler import FirebaseToggler
+from firebaseAuthentication.auth_factory import FirebaseConnectionFactory
+from firebaseAuthentication.firebase_rules.firebase_toggler import FirebaseToggler
 from factory.global_object import GlobalObject
 from firebaseFolder.firebase_conversation import FirebaseConversation
 from firebaseFolder.firebase_order import FirebaseOrder

@@ -1,7 +1,7 @@
 import datetime
 
-from authentication.abstraction.abstract_connection import AbstractFirebaseConnection
-from authentication.sdk_auth.firebase_sdk_connection import FirebaseSDKConnection
+from firebaseAuthentication.abstraction.abstract_connection import AbstractFirebaseConnection
+from firebaseAuthentication.sdk_auth.firebase_sdk_connection import FirebaseSDKConnection
 from firebaseFolder.firebase_core_wrapper import FirebaseWrapper
 from utils.patterns import singleton
 
