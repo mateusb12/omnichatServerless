@@ -1,14 +1,12 @@
 import logging
 
 from starlette.responses import JSONResponse
-
-from dialogflowFolder.dialogflow_utils import sendWebhookCallback
+from dialogflowFolder.dialogflow_utils import sendWebhookCallback, structureNewDialogflowContext
 from factory.core_instantiations import menuHandler
 
 
 def fulfillment_processing(requestContent) -> JSONResponse:
     print("FULFILLMENT ENDPOINT!")
-    print(requestContent)
     outputContexts = requestContent['queryResult']['outputContexts']
     menuHandler.params["baseContextName"] = outputContexts[0]['name'].rsplit('/contexts/', 1)[0]
     queryText = requestContent['queryResult']['queryText']
@@ -35,10 +33,10 @@ def fulfillment_processing(requestContent) -> JSONResponse:
         # return __handleOrderPizzaIntent(queryText, requestContent)
         return sendWebhookCallback("Order.pizza")
     elif currentIntent == "Welcome":
-        # pizzaMenu = menuHandler.getPizzasString()
-        # welcomeString = f"Olá! Bem-vindo à Pizza do Bill! Funcionamos das 17h às 22h.\n {pizzaMenu}." \
-        #                 f" \nQual pizza você vai querer?"
-        # startContext = structureNewDialogflowContext(contextName="Start", lifespan=1)
-        # return sendWebhookCallback(botMessage=welcomeString, nextContext=startContext)
-        return sendWebhookCallback("Welcome")
+        pizzaMenu = menuHandler.get_menu_pizza_string()
+        welcomeString = f"Olá! Bem-vindo à Pizza do Bill! Funcionamos das 17h às 22h.\n {pizzaMenu}." \
+                        f" \nQual pizza você vai querer?"
+        startContext = structureNewDialogflowContext(contextName="Start", lifespan=1)
+        return sendWebhookCallback(botMessage=welcomeString, nextContext=startContext)
     return sendWebhookCallback(botMessage="a")
+

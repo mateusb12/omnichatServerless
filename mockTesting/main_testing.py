@@ -1,4 +1,7 @@
 import json
+
+from starlette.responses import JSONResponse
+
 from main import order_handler, fulfillment_endpoint
 from mockTesting.mock_utils.mock_templates import mock_order_1, fulfillment_mock
 from mockTesting.mock_utils.mock_object import MockRequest
@@ -10,9 +13,10 @@ def __test_order_handler(headers: dict) -> dict:
     return json.loads(response3.data.decode('utf-8'))
 
 
-def __test_fulfillment_endpoint(headers: dict):
+def __test_fulfillment_endpoint(headers: dict) -> dict:
     fulfillment_request = MockRequest(path="/webhook", method="GET", headers=headers, json_data=fulfillment_mock)
-    return fulfillment_endpoint(fulfillment_request)
+    response: JSONResponse = fulfillment_endpoint(fulfillment_request)
+    return json.loads(response.body)
 
 
 def __main():
