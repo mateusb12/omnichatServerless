@@ -4,10 +4,20 @@ from firebaseAuthentication.sdk_auth.firebase_sdk_connection import FirebaseSDKC
 
 class FirebaseConnectionFactory:
     @staticmethod
-    def create_connection(connection_type: str):
+    def create_connection(connection_type: str) -> object:
         if connection_type == "SDK":
             return FirebaseSDKConnection()
         elif connection_type == "HTTP":
             return FirebaseHTTPConnection()
         else:
             raise ValueError("Unknown connection type")
+
+
+def __main():
+    fcc = FirebaseConnectionFactory()
+    sdk_connection = fcc.create_connection("SDK")
+    return
+
+
+if __name__ == '__main__':
+    __main()
