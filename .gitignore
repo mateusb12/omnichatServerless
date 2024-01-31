@@ -3,8 +3,9 @@
 /.gcloudignore
 /.github/workflows/omnichat-9a789-5322d25ae638.json
 /.github/workflows/pizza_do_bill_custom_key.json
-/costs/pizza_do_bill.json
+/costs/sdks/pizza_do_bill.json
 .idea/
 /.idea/omnichatServerless.iml
-/costs/token.json
+/costs/sdks/token.json
 /costs/cost_breakdown/reports.csv
+/costs/sdks/middleware_omnichat.json
