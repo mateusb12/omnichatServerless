@@ -7,10 +7,10 @@ def __get_last_segment(event):
 
 
 def lambda_handler(event, context):
-    last_segment = __get_last_segment(event)
+    last_segment = dict(event)
     return {
         'statusCode': 200,
-        'body': last_segment + dumb_import_function(),
+        'body': last_segment,
         'headers': {
             'Content-Type': 'text/plain'
         }
