@@ -2,9 +2,8 @@ from data.dumb_import import dumb_import_function
 
 
 def __get_last_segment(event):
-    path = event['path']  # Get the path from the event
-    path_segments = path.split('/')  # Split the path into segments
-    return path_segments[-1]
+    path = event['path']
+    return path.split('/')
 
 
 def lambda_handler(event, context):
