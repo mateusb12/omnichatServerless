@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     last_segment = dict(event)
     return {
         'statusCode': 200,
-        'body': last_segment,
+        'body': "last_segment",
         'headers': {
             'Content-Type': 'text/plain'
         }
