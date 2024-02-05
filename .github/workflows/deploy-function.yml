@@ -48,7 +48,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-2'
-          LAMBDA_FUNCTION_NAME: 'get_all_conversations'  # Adjust to your Lambda function name.
+          LAMBDA_FUNCTION_NAME: 'conversation-crud'  # Adjust to your Lambda function name.
         run: |
           zip -r function.zip . -x@.zipignore
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
