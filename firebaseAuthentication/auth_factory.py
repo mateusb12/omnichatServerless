@@ -10,7 +10,7 @@ class FirebaseConnectionFactory:
         elif connection_type == "HTTP":
             return FirebaseHTTPConnection()
         else:
-            raise ValueError("Unknown connection type")
+            raise ValueError(f"[{connection_type}] unknown connection type. Only known types are 'SDK' and 'HTTP'.")
 
 
 def __main():

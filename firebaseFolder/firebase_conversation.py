@@ -158,7 +158,7 @@ def checkNewUser(whatsappNumber: str, numberPot: List[str],
 def __main():
     # __createDummyConversations()
     factory = FirebaseConnectionFactory()
-    fc = factory.create_connection("SDK")
+    fc = factory.create_connection("HTTP")
     fcm = FirebaseConversation(fc)
     all_conversations = fcm.getAllConversations()
     print(all_conversations)
