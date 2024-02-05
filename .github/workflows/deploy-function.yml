@@ -50,7 +50,7 @@ jobs:
           AWS_REGION: 'us-east-2'
           LAMBDA_FUNCTION_NAME: 'get_all_conversations'  # Adjust to your Lambda function name.
         run: |
-          zip -r function.zip omnichatServerless -x@.zipignore
+          zip -r function.zip . -x@.zipignore
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
         working-directory: ${{ github.workspace }}
 
