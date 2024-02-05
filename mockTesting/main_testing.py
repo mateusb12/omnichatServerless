@@ -23,7 +23,7 @@ def __main():
     headers = {
         "Content-Type": "application/json"
     }
-    res = __test_fulfillment_endpoint(headers)
+    res = __test_order_handler(headers)
     print(res)
 
 

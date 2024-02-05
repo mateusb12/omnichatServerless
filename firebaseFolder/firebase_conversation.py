@@ -160,11 +160,13 @@ def __main():
     factory = FirebaseConnectionFactory()
     fc = factory.create_connection("SDK")
     fcm = FirebaseConversation(fc)
-    randomUniqueId = str(uuid.uuid4())
-    currentTime = datetime.datetime.now().strftime("%H:%M")
-    msgDict = {"body": "Olá, tudo bem?", "id": str(uuid.uuid4()), "phoneNumber": "+5585999171902",
-               "sender": "Mateus", "time": datetime.datetime.now().strftime("%H:%M")}
-    fcm.appendMessageToWhatsappNumber(msgDict, "+558599663533")
+    all_conversations = fcm.getAllConversations()
+    print(all_conversations)
+    # randomUniqueId = str(uuid.uuid4())
+    # currentTime = datetime.datetime.now().strftime("%H:%M")
+    # msgDict = {"body": "Olá, tudo bem?", "id": str(uuid.uuid4()), "phoneNumber": "+5585999171902",
+    #            "sender": "Mateus", "time": datetime.datetime.now().strftime("%H:%M")}
+    # fcm.appendMessageToWhatsappNumber(msgDict, "+558599663533")
 
 
 if __name__ == "__main__":
