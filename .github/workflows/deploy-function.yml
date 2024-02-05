@@ -52,6 +52,7 @@ jobs:
         run: |
           zip function.zip .
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
+        working-directory: ${{ github.workspace }}
 
 #      - name: Set Up Google Cloud SDK
 #        uses: google-github-actions/setup-gcloud@v0.2.1
