@@ -51,6 +51,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-2'
           LAMBDA_FUNCTION_NAME: 'conversation_handler'  # Adjust to your Lambda function name.
+          SDK_TYPE: ${{ secrets.SDK_TYPE }}
+          SDK_PROJECT_ID: ${{ secrets.SDK_PROJECT_ID }}
+          SDK_PRIVATE_KEY_ID: ${{ secrets.SDK_PRIVATE_KEY_ID }}
+          SDK_PRIVATE_KEY: ${{ secrets.SDK_PRIVATE_KEY }}
+          SDK_CLIENT_EMAIL: ${{ secrets.SDK_CLIENT_EMAIL }}
+          SDK_CLIENT_ID: ${{ secrets.SDK_CLIENT_ID }}
+          SDK_CLIENT_X509_CERT_URL: ${{ secrets.SDK_CLIENT_X509_CERT_URL }}
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_USERNAME: ${{ secrets.FIREBASE_USERNAME }}
+          FIREBASE_PASSWORD: ${{ secrets.FIREBASE_PASSWORD }}
+          SEND_GMAIL_USERNAME: ${{ secrets.SEND_GMAIL_USERNAME }}
+          SEND_GMAIL_APP_PASSWORD: ${{ secrets.SEND_GMAIL_APP_PASSWORD }}
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
         run: |
           zip -r function.zip . -x@.zipignore
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
@@ -58,7 +72,7 @@ jobs:
           for VAR in ${ENV_VARS[@]}; do
             while true; do
               if aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
-                --environment "Variables={$VAR=${{ secrets.$VAR }}}"; then
+                --environment "Variables={$VAR=${!VAR}}"; then
                 echo "Update function configuration succeeded for $VAR"
                 break
               else
