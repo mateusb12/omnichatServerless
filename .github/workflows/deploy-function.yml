@@ -54,8 +54,16 @@ jobs:
         run: |
           zip -r function.zip . -x@.zipignore
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
-          aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
-            --environment Variables="{FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}}"
+          while true; do
+             if aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
+               --environment Variables="{FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}}"; then
+               echo "Update function configuration succeeded"
+               break
+             else
+               echo "Update function configuration failed, retrying in 10 seconds"
+               sleep 10
+             fi
+           done
         working-directory: ${{ github.workspace }}
 
 #      - name: Set Up Google Cloud SDK
