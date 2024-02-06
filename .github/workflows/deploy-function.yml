@@ -53,7 +53,7 @@ jobs:
           LAMBDA_FUNCTION_NAME: 'conversation_handler'  # Adjust to your Lambda function name.
         run: |
           zip -r function.zip . -x@.zipignore
-          aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
+          aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip --environment Variables="{FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}}"
         working-directory: ${{ github.workspace }}
 
 #      - name: Set Up Google Cloud SDK
