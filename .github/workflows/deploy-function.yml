@@ -39,10 +39,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install boto3
           pip install awscli
-          pip install python-dotenv -t .
-          pip install requests -t .
-          pip install firebase-admin -t .
-          pip install psutil -t .
+#          pip install python-dotenv -t .
+#          pip install requests -t .
+#          pip install firebase-admin -t .
+#          pip install psutil -t .
 
       - name: Configure AWS CLI
         run: aws configure set region us-east-2
