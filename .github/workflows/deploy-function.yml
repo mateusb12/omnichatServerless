@@ -69,17 +69,20 @@ jobs:
           zip -r function.zip . -x@.zipignore
           aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
           ENV_VARS=("SDK_TYPE" "SDK_PROJECT_ID" "SDK_PRIVATE_KEY_ID" "SDK_PRIVATE_KEY" "SDK_CLIENT_EMAIL" "SDK_CLIENT_ID" "SDK_CLIENT_X509_CERT_URL" "FIREBASE_DATABASE_URL" "FIREBASE_API_KEY" "FIREBASE_USERNAME" "FIREBASE_PASSWORD" "SEND_GMAIL_USERNAME" "SEND_GMAIL_APP_PASSWORD" "TEST_SECRET")
+          JSON_ENV_VARS="{"
           for VAR in ${ENV_VARS[@]}; do
-            while true; do
-              if aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
-                --environment "Variables={$VAR=${!VAR}}"; then
-                echo "Update function configuration succeeded for $VAR"
-                break
-              else
-                echo "Update function configuration failed for $VAR, retrying in 10 seconds"
-                sleep 10
-              fi
-            done
+            JSON_ENV_VARS="$JSON_ENV_VARS\"$VAR\":\"${!VAR}\","
+          done
+          JSON_ENV_VARS="${JSON_ENV_VARS::-1}}"  # Remove the trailing comma and close the JSON object.
+          while true; do
+            if aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
+              --environment "Variables=$JSON_ENV_VARS"; then
+              echo "Update function configuration succeeded"
+              break
+            else
+              echo "Update function configuration failed, retrying in 10 seconds"
+              sleep 10
+            fi
           done
         working-directory: ${{ github.workspace }}
 
