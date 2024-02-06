@@ -1,6 +1,6 @@
 import json
 from typing import List
-
+import requests
 from cruds.conversation_crud import get_all_conversations, update_conversation, update_multiple_conversations
 
 
