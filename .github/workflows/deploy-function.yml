@@ -42,6 +42,7 @@ jobs:
           pip install python-dotenv -t .
           pip install requests -t .
           pip install firebase-admin -t .
+          pip install psutil -t .
 
       - name: Configure AWS CLI
         run: aws configure set region us-east-2
