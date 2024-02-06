@@ -58,7 +58,7 @@ jobs:
           for VAR in ${ENV_VARS[@]}; do
             while true; do
               if aws lambda update-function-configuration --function-name $LAMBDA_FUNCTION_NAME \
-                --environment Variables="{$VAR=${{ secrets.$VAR }}}"; then
+                --environment "Variables={$VAR=${{ secrets.$VAR }}}"; then
                 echo "Update function configuration succeeded for $VAR"
                 break
               else
