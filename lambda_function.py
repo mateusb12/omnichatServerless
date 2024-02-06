@@ -37,7 +37,8 @@ def lambda_handler(event, context) -> dict:
     required_method, operation_func = operation_dict[suffix]
     if required_method != http_method:
         return __get_standard_error_message(f'Only {required_method} requests are accepted for the operation {suffix}')
-    return operation_func()
+    result = operation_func()
+    return {"statusCode": 200, "headers": {"Content-Type": "application/json"}, "body": json.dumps(result)}
     # return {"statusCode": 200,
     #         "headers": {
     #             "Content-Type": "text/html",
