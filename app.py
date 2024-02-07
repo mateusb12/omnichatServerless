@@ -37,9 +37,11 @@ def handler(event, context):
     required_method, operation_func = operation_dict[suffix]
     if required_method != http_method:
         return __get_standard_error_message(f'Only {required_method} requests are accepted for the operation {suffix}')
+    func_params = {}
+    result = operation_func(func_params)
 
     return {"headers": {"Content-Type": "application/json"}, "statusCode": 200,
-            "body": json.dumps({"message": "Lambda container image updated!", "event": event})}
+            "body": json.dumps(result)}
 
 # def lambda_handler(event, context) -> dict:
 #     headers = event["headers"]

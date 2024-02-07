@@ -6,7 +6,7 @@ from utils.cloudFunctionsUtils import log_memory_usage
 from utils.corsBlocker import createResponseWithAntiCorsHeaders
 
 
-def get_all_conversations(request=None):
+def get_all_conversations(params=None):
     conversations = fcm.getAllConversations()
     arrayOfConversations = list(conversations.values()) if conversations is not None else ["None"]
     log_memory_usage()
