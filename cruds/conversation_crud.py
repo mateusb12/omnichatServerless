@@ -9,8 +9,7 @@ from utils.corsBlocker import createResponseWithAntiCorsHeaders
 def get_all_conversations(params=None):
     conversations = fcm.getAllConversations()
     arrayOfConversations = list(conversations.values()) if conversations is not None else ["None"]
-    log_memory_usage()
-    return createResponseWithAntiCorsHeaders(arrayOfConversations)
+    return arrayOfConversations
 
 
 def update_conversation(request=None):
