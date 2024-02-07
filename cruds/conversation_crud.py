@@ -14,11 +14,9 @@ def get_all_conversations(body=None) -> List[str]:
 
 
 def update_conversation(body=None):
-    positive_response = 'conversation updated successfully'
-    negative_response = 'error updating conversation, conversation does not exist'
-    response = positive_response if fcm.updateConversation(body) else negative_response
-    response_code = 200 if positive_response else 500
-    return {"response": response, "statusCode": response_code}
+    reason, result = fcm.updateConversation(body)
+    response_code = 200 if result else 500
+    return {"response": reason, "statusCode": response_code}
 
 
 def update_multiple_conversations(request=None):

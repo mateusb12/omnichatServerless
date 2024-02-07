@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import List
+from typing import List, Tuple
 
 from firebaseAuthentication.abstraction.abstract_connection import AbstractFirebaseConnection
 from firebaseAuthentication.auth_factory import FirebaseConnectionFactory
@@ -105,22 +105,25 @@ class FirebaseConversation(FirebaseWrapper):
             else self.firebaseConnection.writeData(path=self.path, data=conversationData)
         )
 
-    def updateConversation(self, conversationData: dict) -> bool:
-        uniqueId = self.getUniqueIdByWhatsappNumber(conversationData["phoneNumber"])
+    def updateConversation(self, conversationData: dict) -> Tuple[str, bool]:
+        phoneNumber = conversationData.get("phoneNumber", None)
+        uniqueId = self.getUniqueIdByWhatsappNumber(phoneNumber)
+        if not uniqueId:
+            return f"Conversation not found for number {phoneNumber}", False
 
-        # Adicione "conversations/" antes do uniqueId para atualizar dentro do nó de conversations
         path = f"{self.path}/{uniqueId}" if uniqueId is not None else False
         if not path:
-            return False
+            return "Invalid path", False
         existingData = self.firebaseConnection.readData(path=path)
-
         if existingData is None:
-            return False
+            return "No existing conversation found", False
 
         # Atualiza os campos existentes com os novos campos fornecidos em conversationData
         existingData.update(conversationData)
-
-        return self.firebaseConnection.overWriteData(path=path, data=existingData) if path is not None else False
+        result = self.firebaseConnection.overWriteData(path=path, data=existingData) if path is not None else False
+        if result:
+            return "Conversation updated successfully", result
+        return "Error updating conversation", result
 
     def updateConversationAddingUnreadMessages(self, messageData: dict) -> bool or None:
         uniqueId = self.getUniqueIdByWhatsappNumber(messageData["phoneNumber"])
