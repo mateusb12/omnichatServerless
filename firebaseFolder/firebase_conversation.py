@@ -112,7 +112,7 @@ class FirebaseConversation(FirebaseWrapper):
         path = f"{self.path}/{uniqueId}" if uniqueId is not None else False
         if not path:
             return False
-        existingData =  self.firebaseConnection.readData(path=path)
+        existingData = self.firebaseConnection.readData(path=path)
 
         if existingData is None:
             return False
