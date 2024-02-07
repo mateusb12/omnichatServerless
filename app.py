@@ -30,9 +30,9 @@ def handler(event, context):
     if suffix not in available_operations:
         return __get_invalid_method_error_message(path, available_operations)
     operation_dict = {
-        "get_all_conversations": ("GET", "a"),
-        "update_conversation": ("PUT", "b"),
-        "update_multiple_conversations": ("PUT", "c")
+        "get_all_conversations": ("GET", get_all_conversations),
+        "update_conversation": ("PUT", update_conversation),
+        "update_multiple_conversations": ("PUT", update_multiple_conversations)
     }
     required_method, operation_func = operation_dict[suffix]
     if required_method != http_method:
