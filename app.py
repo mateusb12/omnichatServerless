@@ -12,9 +12,9 @@ def __get_standard_error_message(msg: str):
             "body": msg}
 
 
-def __get_invalid_method_error_message(path_list: List[str], method_list: List[str]):
+def __get_invalid_method_error_message(path_list: List[str], method_list: List[str], root: str):
     tag = "/".join(filter(None, path_list))
-    msg = f"'/{tag}' is an invalid operation! Valid operations are "
+    msg = f"'/{tag}' is an invalid operation for the /{root} endpoint! Valid operations are "
     for item in method_list:
         msg += f"'/{item}', "
     msg = msg[:-2]
@@ -35,10 +35,12 @@ def handler(event, context):
 
 
 def conversation_handler(path_list: List[str], http_method: str, event: dict):
+    root_tag = "conversation_handler"
     available_operations = ["get_all_conversations", "update_conversation", "update_multiple_conversations"]
     suffix = path_list[-1]
     if suffix not in available_operations:
-        return __get_invalid_method_error_message(path_list, available_operations)
+        return __get_invalid_method_error_message(path_list=path_list, method_list=available_operations,
+                                                  root=root_tag)
     operation_dict = {
         "get_all_conversations": ("GET", get_all_conversations),
         "update_conversation": ("PUT", update_conversation),
