@@ -1,29 +1,47 @@
 import json
 
-from starlette.responses import JSONResponse
-
-from main import order_handler, fulfillment_endpoint
-from mockTesting.mock_utils.mock_templates import mock_order_1, fulfillment_mock
-from mockTesting.mock_utils.mock_object import MockRequest
+from app import handler
 
 
-def __test_order_handler(headers: dict) -> dict:
-    mock_request3 = MockRequest(path="/order_handler/read", method="GET", headers=headers, json_data=mock_order_1)
-    response3 = order_handler(mock_request3)
-    return json.loads(response3.data.decode('utf-8'))
+def __test_handler(method: str, path: str, body: dict) -> dict:
+    event = {
+        "requestContext": {
+            "http": {
+                "method": method,
+                "path": path
+            }
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(body)
+    }
+    response = handler(event, {})
+    return response
 
 
-def __test_fulfillment_endpoint(headers: dict) -> dict:
-    fulfillment_request = MockRequest(path="/webhook", method="GET", headers=headers, json_data=fulfillment_mock)
-    response: JSONResponse = fulfillment_endpoint(fulfillment_request)
-    return json.loads(response.body)
+def __test_get_all_conversations():
+    method = "GET"
+    path = "/conversation_handler/get_all_conversations"
+    body = {}
+    res = __test_handler(method, path, body)
+    return res
+
+
+def __test_create_order():
+    method = "POST"
+    path = "/order_handler/create_order"
+    orderItems = [{"price": 30, "quantity": 1, "size": "medium", "flavors": ["Pepperoni"], "type": "pizza"},
+                  {"price": 12.5, "quantity": 1, "size": "2L", "flavors": ["Coca-Cola"], "type": "drink"},
+                  {"price": 10, "quantity": 1, "size": "small", "flavors": ["Chocolate"], "type": "dessert"}]
+    body = {"customerName": "Wellington", "status": "pending", "address": "Rua do Verão", "platform": "whatsapp",
+            "communication": "welly_10@gmail.com", "orderItems": orderItems}
+    res = __test_handler(method, path, body)
+    return res
 
 
 def __main():
-    headers = {
-        "Content-Type": "application/json"
-    }
-    res = __test_order_handler(headers)
+    res = __test_create_order()
     print(res)
 
 

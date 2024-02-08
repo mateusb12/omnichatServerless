@@ -1,5 +1,6 @@
 import json
 from json import JSONDecodeError
+from typing import Tuple
 
 from cruds.crud_utils import get_url_param
 from factory.core_instantiations import fo
@@ -7,24 +8,17 @@ from factory.core_instantiations import g as global_object
 from utils.corsBlocker import createResponseWithAntiCorsHeaders
 
 
-def create_order(request):
-    if request is None or request.method != 'POST':
-        return 'Only POST requests are accepted', 405
-    try:
-        data = request.json
-    except JSONDecodeError as e:
-        return f'Invalid JSON payload: {e}', 400
-
+def create_order(body=None) -> Tuple[any, str, int]:
     REQUIRED_FIELDS = ["customerName", "status", "address", "platform", "communication", "orderItems"]
     field_statuses = {field: 'OK' for field in REQUIRED_FIELDS}
 
     for field in REQUIRED_FIELDS:
-        if field not in data:
+        if field not in body:
             field_statuses[field] = 'missing'
 
     order_items_status = []
-    if "orderItems" in data:
-        for item in data["orderItems"]:
+    if "orderItems" in body:
+        for item in body["orderItems"]:
             REQUIRED_ITEM_FIELDS = ["type", "flavors", "size", "quantity", "price"]
             item_status = {field: 'OK' for field in REQUIRED_ITEM_FIELDS}
             for field in REQUIRED_ITEM_FIELDS:
@@ -40,10 +34,10 @@ def create_order(request):
             for index, item_status in enumerate(order_items_status):
                 response += ' | ' + ' | '.join([f'orderItem {index+1} {field} → {status}'
                                                 for field, status in item_status.items()])
-        return response, 400
+        return None, f"Could not create order. Missing required fields: {response}", 400
 
-    result: bool = fo.createOrder(order_data=data)
-    return createResponseWithAntiCorsHeaders(result)
+    result: bool = fo.createOrder(order_data=body)
+    return None, "Order created successfully" if result else "Error creating order", 200 if result else 500
 
 
 def get_order_handler(request):
