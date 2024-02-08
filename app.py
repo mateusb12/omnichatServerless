@@ -37,7 +37,7 @@ def handler(event, context):
 def conversation_handler(path_list: List[str], http_method: str, event: dict):
     root_tag = "conversation_handler"
     available_operations = ["get_all_conversations", "update_conversation", "update_multiple_conversations"]
-    suffix = path_list[-1]
+    suffix = path_list[-1] if len(path_list) > 1 else "/"
     if suffix not in available_operations:
         return __get_invalid_method_error_message(path_list=path_list, method_list=available_operations,
                                                   root=root_tag)
