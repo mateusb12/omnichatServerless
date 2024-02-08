@@ -38,10 +38,10 @@ def handler(event, context):
     if required_method != http_method:
         return __get_standard_error_message(f'Only {required_method} requests are accepted for the operation {suffix}')
     body = json.loads(event["body"]) if "body" in event else {}
-    result = operation_func(body)
+    content, reason, response_code = operation_func(body)
 
-    return {"headers": {"Content-Type": "application/json"}, "statusCode": 200,
-            "body": json.dumps(result)}
+    return {"headers": {"Content-Type": "application/json"}, "statusCode": response_code,
+            "body": json.dumps(content) if content else reason}
 
 # def lambda_handler(event, context) -> dict:
 #     headers = event["headers"]
