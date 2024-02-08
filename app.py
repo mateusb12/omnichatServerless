@@ -24,7 +24,7 @@ def __get_invalid_method_error_message(path_list: List[str], method_list: List[s
 def handler(event, context):
     headers = event["headers"] if "headers" in event else {}
     http_method = event['requestContext']['http']['method']
-    path = event["requestContext"]["http"]["path"].split("/")
+    path = event["requestContext"]["http"]["path"].split("/")[1:]
     main_suffix = path[0]
     secondary_suffix = path[1] if len(path) > 1 else None
     available_operations = ["conversation_handler"]
