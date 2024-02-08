@@ -47,7 +47,7 @@ class FirebaseConversation(FirebaseWrapper):
                 return uniqueId
         return None
 
-    def appendMessageToWhatsappNumber(self, whatsappNumber: str, body: str, sender: str):
+    def appendMessageToWhatsappNumber(self, whatsappNumber: str, body: str, sender: str) -> Tuple[int, str]:
         if not body:
             return 400, "Body is empty."
         if not whatsappNumber:
@@ -67,10 +67,13 @@ class FirebaseConversation(FirebaseWrapper):
         self.firebaseConnection.overWriteData(path=conversationUniqueId, data=conversationData)
         return 200, "Conversation updated successfully."
 
-    def appendMultipleMessagesToWhatsappNumber(self, messagesData: List[dict], whatsappNumber: str) -> bool:
+    def appendMultipleMessagesToWhatsappNumber(self, messagesData: List[dict], whatsappNumber: str) -> Tuple[int, str]:
         all_conversations = self.getAllConversations()
-        uniqueId, conversationData = organizeSingleMessageData(messagesData, whatsappNumber, all_conversations)
-        return self.writeToFirebase(uniqueId, conversationData)
+        uniqueId, updatedConversation = organizeSingleMessageData(messagesData, whatsappNumber, all_conversations)
+        if uniqueId:
+            self.writeToFirebase(uniqueId, updatedConversation)
+            return 200, "Conversation updated successfully."
+        return 400, f"Conversation not found for whatsappNumber: {whatsappNumber}"
 
     def retrieveAllMessagesByWhatsappNumber(self, whatsappNumber: str) -> List[dict] or None:
         uniqueId = self.getUniqueIdByWhatsappNumber(whatsappNumber)

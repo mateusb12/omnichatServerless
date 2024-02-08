@@ -15,29 +15,40 @@ def get_all_conversations(body=None) -> Tuple[List[str], str, int]:
 
 def update_conversation(body=None) -> Tuple[any, str, int]:
     reason, result = fcm.updateConversation(body)
-    response_code = 200 if result else 500
+    response_code = 200 if result else 404
     content = None
     return content, reason, response_code
 
 
-def update_multiple_conversations(request=None):
+def update_multiple_conversations(body=None) -> Tuple[any, str, int]:
+    """Example body json
+    {"metaData": {"ip": "127.0.0.0", "sender": "John", "phoneNumber": "+558599663533"},
+    "userMessage": "Hello, I need help with my order",
+    "botAnswer": "Hello, how can I help you?"}
+    """
+    if "metaData" not in body:
+        return None, "'metaData' value not found in the request json", 400
+    if "userMessage" not in body:
+        return None, "'userMessage' value not found in the request json", 400
+    if "botAnswer" not in body:
+        return None, "'botAnswer' value not found in the request json", 400
+    required_metadata_values = ["ip", "sender", "phoneNumber"]
+    for item in required_metadata_values:
+        if item not in body["metaData"]:
+            return None, f"body['metadata']['{item}'] value not found in the request json", 400
     try:
-        payload = request.get_json()
-        userMessage = payload["userMessage"]
-        botAnswer = payload["botAnswer"]
-        metaData = payload["metaData"]
-        metaData.pop("userMessage")
+        userMessage = body["userMessage"]
+        botAnswer = body["botAnswer"]
+        metaData = body["metaData"]
         phoneNumber = metaData["phoneNumber"]
-        userMessageDict = {"body": userMessage, "timestamp": datetime.datetime.now().strftime('%d-%b-%Y %H:%M'), **metaData}
-        botMessageDict = {"body": botAnswer, "timestamp": datetime.datetime.now().strftime('%d-%b-%Y %H:%M'),**metaData,
-                          "sender": "Bot"}
+        timestamp = datetime.datetime.now().strftime('%d-%b-%Y %H:%M')
+        userMessageDict = {"body": userMessage, "timestamp": timestamp, **metaData}
+        botMessageDict = {"body": botAnswer, "timestamp": timestamp, **metaData, "sender": "Bot"}
         messagePot = [userMessageDict, botMessageDict]
 
-        result = fcm.appendMultipleMessagesToWhatsappNumber(messagesData=messagePot, whatsappNumber=phoneNumber)
-        response_code = 200 if result is True else 500
-        final_response = json.dumps({'response': 'messages appended successfully'}), response_code
-
-        return createResponseWithAntiCorsHeaders(final_response)
+        response_code, reason = fcm.appendMultipleMessagesToWhatsappNumber(messagesData=messagePot,
+                                                                           whatsappNumber=phoneNumber)
+        return None, reason, response_code
 
     except Exception as e:
-        return createResponseWithAntiCorsHeaders((json.dumps({'error': f"An error occurred: {str(e)}"}), 500))
+        return None, str(e), 500

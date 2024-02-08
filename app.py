@@ -41,7 +41,7 @@ def handler(event, context):
     content, reason, response_code = operation_func(body)
 
     return {"headers": {"Content-Type": "application/json"}, "statusCode": response_code,
-            "body": json.dumps(content) if content else reason}
+            "body": json.dumps(content) if content else json.dumps(reason)}
 
 # def lambda_handler(event, context) -> dict:
 #     headers = event["headers"]
