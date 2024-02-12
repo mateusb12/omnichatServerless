@@ -40,27 +40,27 @@ def create_order(body=None) -> Tuple[any, str, int]:
     return None, "Order created successfully" if result else "Error creating order", 200 if result else 500
 
 
-def get_order_handler(request):
-    if request is None or request.method != "GET":
-        return "Only GET requests are accepted", 405
-    unique_id = request.headers.get('url_parameter')
-    if unique_id:
-        return __read_order_by_id(unique_id)
-    else:
-        return __read_all_orders()
+def get_order_handler(body=None) -> Tuple[any, str, int]:
+    unique_id = body["unique_id"] if "unique_id" in body else None
+    if not unique_id:
+        return None, "'unique_id' cannot be empty. There was no unique_id in the request body", 400
+    result = __read_all_orders() if unique_id.lower() == "all" else __read_order_by_id(unique_id)
+    if result is None:
+        return None, f"Order [{unique_id}] does not exist in the database", 404
+    return result, "Order retrieved successfully", 200
 
 
 def __read_all_orders():
     orders = fo.getAllOrders()
     arrayOfOrders = list(orders.values()) if orders is not None else []
-    return createResponseWithAntiCorsHeaders(arrayOfOrders)
+    return arrayOfOrders
 
 
 def __read_order_by_id(order_id):
     if order_id is None:
         return "'url_parameter' cannot be empty. There was no url parameter in the request", 400
     order = fo.getOrder(order_unique_id=order_id)
-    return createResponseWithAntiCorsHeaders(order)
+    return order
 
 
 def update_order(request):

@@ -38,16 +38,11 @@ def handler(event, context):
         return order_handler(path_list=path, http_method=http_method, event=event)
 
 
-def conversation_handler(path_list: List[str], http_method: str, event: dict):
-    available_operations = ["get_all_conversations", "update_conversation", "update_multiple_conversations"]
+def _generic_crud_handler(path_list: List[str], http_method: str, event: dict, available_operations: List[str],
+                          operation_dict: dict):
     suffix = path_list[-1]
     if suffix not in available_operations:
         return __get_invalid_method_error_message(path_list=path_list, method_list=available_operations)
-    operation_dict = {
-        "get_all_conversations": ("GET", get_all_conversations),
-        "update_conversation": ("PUT", update_conversation),
-        "update_multiple_conversations": ("PUT", update_multiple_conversations)
-    }
     required_method, operation_func = operation_dict[suffix]
     if required_method != http_method:
         return __get_standard_error_message(f'Only {required_method} requests are accepted for the operation {suffix}')
@@ -57,21 +52,22 @@ def conversation_handler(path_list: List[str], http_method: str, event: dict):
             "body": json.dumps(content) if content else json.dumps(reason)}
 
 
+def conversation_handler(path_list: List[str], http_method: str, event: dict):
+    available_operations = ["get_all_conversations", "update_conversation", "update_multiple_conversations"]
+    operation_dict = {
+        "get_all_conversations": ("GET", get_all_conversations),
+        "update_conversation": ("PUT", update_conversation),
+        "update_multiple_conversations": ("PUT", update_multiple_conversations)
+    }
+    return _generic_crud_handler(path_list, http_method, event, available_operations, operation_dict)
+
+
 def order_handler(path_list: List[str], http_method: str, event: dict):
     available_operations = ["create_order", "read_order", "update_order", "delete_order"]
-    suffix = path_list[-1]
-    if suffix not in available_operations:
-        return __get_invalid_method_error_message(path_list=path_list, method_list=available_operations)
     operation_dict = {
         "create_order": ("POST", create_order),
         "read_order": ("GET", get_order_handler),
         "update_order": ("PUT", update_order),
         "delete_order": ("DELETE", delete_order)
     }
-    required_method, operation_func = operation_dict[suffix]
-    if required_method != http_method:
-        return __get_standard_error_message(f'Only {required_method} requests are accepted for the operation {suffix}')
-    body = json.loads(event["body"]) if "body" in event else {}
-    content, reason, response_code = operation_func(body)
-    return {"headers": {"Content-Type": "application/json"}, "statusCode": response_code,
-            "body": json.dumps(content) if content else json.dumps(reason)}
+    return _generic_crud_handler(path_list, http_method, event, available_operations, operation_dict)
