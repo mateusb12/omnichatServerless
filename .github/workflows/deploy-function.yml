@@ -63,9 +63,11 @@ jobs:
         run: |
           # Get the list of all image digests
           ALL_IMAGES=$(aws ecr list-images --repository-name docker-lambda --query 'imageIds[*].imageDigest' --output text)
+          echo "All images: $ALL_IMAGES"
       
           # Exclude the latest image from the list
           OLD_IMAGES=$(echo "$ALL_IMAGES" | head -n -1)
+          echo "Old images: $OLD_IMAGES"
       
           # Delete the images
           for image in $OLD_IMAGES; do
