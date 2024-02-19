@@ -63,15 +63,15 @@ jobs:
         run: |
           # Get the list of image digests, sorted by creation date
           ALL_IMAGES=$(aws ecr describe-images --repository-name docker-lambda --query 'sort_by(imageDetails,&imagePushedAt)[*].imageDigest' --output text)
-          
+      
           # Exclude the latest image from the list
           OLD_IMAGES=$(echo "$ALL_IMAGES" | head -n -1)
-          
+      
           # Delete the images
           for image in $OLD_IMAGES; do
             aws ecr batch-delete-image --repository-name docker-lambda --image-ids imageDigest=$image
           done
-          env:
+        env:
           AWS_REGION: us-east-2
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
