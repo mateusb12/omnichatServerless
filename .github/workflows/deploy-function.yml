@@ -59,141 +59,20 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-#      - name: Set up Python
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.12
-#
-#      - name: Install dependencies
-#        run: |
-#          python -m pip install --upgrade pip
-#          pip install boto3
-#          pip install awscli
-#          pip install python-dotenv -t .
-#          pip install requests -t .
-#          pip install firebase-admin -t .
-#          pip install psutil -t .
-
-
-#
-#      - name: Deploy to AWS Lambda
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          AWS_REGION: 'us-east-2'
-#          LAMBDA_FUNCTION_NAME: 'conversation_handler'  # Adjust to your Lambda function name.
-#          SDK_TYPE: ${{ secrets.SDK_TYPE }}
-#          SDK_PROJECT_ID: ${{ secrets.SDK_PROJECT_ID }}
-#          SDK_PRIVATE_KEY_ID: ${{ secrets.SDK_PRIVATE_KEY_ID }}
-#          SDK_PRIVATE_KEY: ${{ secrets.SDK_PRIVATE_KEY }}
-#          SDK_CLIENT_EMAIL: ${{ secrets.SDK_CLIENT_EMAIL }}
-#          SDK_CLIENT_ID: ${{ secrets.SDK_CLIENT_ID }}
-#          SDK_CLIENT_X509_CERT_URL: ${{ secrets.SDK_CLIENT_X509_CERT_URL }}
-#          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-#          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-#          FIREBASE_USERNAME: ${{ secrets.FIREBASE_USERNAME }}
-#          FIREBASE_PASSWORD: ${{ secrets.FIREBASE_PASSWORD }}
-#          SEND_GMAIL_USERNAME: ${{ secrets.SEND_GMAIL_USERNAME }}
-#          SEND_GMAIL_APP_PASSWORD: ${{ secrets.SEND_GMAIL_APP_PASSWORD }}
-#          TEST_SECRET: ${{ secrets.TEST_SECRET }}
-#        run: |
-#          sudo apt-get install -y jq
-#          zip -r function.zip . -x@.zipignore
-#          aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://function.zip
-#        working-directory: ${{ github.workspace }}
-
-#      - name: Set Up Google Cloud SDK
-#        uses: google-github-actions/setup-gcloud@v0.2.1
-#        with:
-#          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
-#          service_account_key: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
-#          export_default_credentials: true
-#
-#      - name: Set .env vars for Cloud Run deployment
-#        run: |# Create an array with all the environment variable assignments
-#          ENV_VARS_ARRAY=(
-#            "SDK_TYPE=${SDK_TYPE}"
-#            "SDK_PROJECT_ID=${SDK_PROJECT_ID}"
-#            "SDK_PRIVATE_KEY=${SDK_PRIVATE_KEY}"
-#            "SDK_PRIVATE_KEY_ID=${SDK_PRIVATE_KEY_ID}"
-#            "SDK_CLIENT_EMAIL=${SDK_CLIENT_EMAIL}"
-#            "SDK_CLIENT_ID=${SDK_CLIENT_ID}"
-#            "SDK_CLIENT_X509_CERT_URL=${SDK_CLIENT_X509_CERT_URL}"
-#            "FIREBASE_DATABASE_URL=${FIREBASE_DATABASE_URL}"
-#            "FIREBASE_API_KEY=${FIREBASE_API_KEY}"
-#            "FIREBASE_USERNAME=${FIREBASE_USERNAME}"
-#            "FIREBASE_PASSWORD=${FIREBASE_PASSWORD}"
-#            "SEND_GMAIL_APP_PASSWORD=${SEND_GMAIL_APP_PASSWORD}"
-#            "SEND_GMAIL_USERNAME=${SEND_GMAIL_USERNAME}"
-#          )
-#
-#           # Join the array elements into a comma-separated string
-#          UPDATE_ENV_VARS_ARG=$(IFS=,; echo "${ENV_VARS_ARRAY[*]}")
-#          echo "UPDATE_ENV_VARS_ARG=$UPDATE_ENV_VARS_ARG" >> $GITHUB_ENV
-#          CURRENT_BUCKET=pizza_code_bucket
-#          echo "CURRENT_BUCKET=$CURRENT_BUCKET" >> $GITHUB_ENV
-#
-#      - name: Deploy fulfillment Cloud Function
-#        run: |
-#          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
-#          gcloud functions deploy webhook \
-#            --source=. \
-#            --runtime=python39 \
-#            --entry-point=fulfillment_endpoint \
-#            --memory 128MB \
-#            --trigger-http \
-#            --allow-unauthenticated \
-#            --stage-bucket=$CURRENT_BUCKET \
-#            --update-env-vars=$UPDATE_ENV_VARS_ARG
-
-#      - name: Deploy conversation_handler Cloud Function
-#        run: |
-#          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
-#          gcloud functions deploy conversation_handler \
-#            --source=. \
-#            --runtime=python39 \
-#            --entry-point=conversation_handler \
-#            --memory 128MB \
-#            --trigger-http \
-#            --allow-unauthenticated \
-#            --stage-bucket=$CURRENT_BUCKET \
-#            --update-env-vars=$UPDATE_ENV_VARS_ARG
-#
-#      - name: Deploy order_handler Cloud Function
-#        run: |
-#          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
-#          gcloud functions deploy order_handler \
-#            --source=. \
-#            --runtime=python39 \
-#            --entry-point=order_handler \
-#            --memory 128MB \
-#            --trigger-http \
-#            --allow-unauthenticated \
-#            --stage-bucket=$CURRENT_BUCKET \
-#            --update-env-vars=$UPDATE_ENV_VARS_ARG
-#
-#      - name: Deploy user_handler Cloud Function
-#        run: |
-#          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
-#          gcloud functions deploy user_handler \
-#            --source=. \
-#            --runtime=python39 \
-#            --entry-point=user_handler \
-#            --memory 128MB \
-#            --trigger-http \
-#            --allow-unauthenticated \
-#            --stage-bucket=$CURRENT_BUCKET \
-#            --update-env-vars=$UPDATE_ENV_VARS_ARG
-
-#      - name: Deploy budget_alert Cloud Function
-#        run: |
-#          echo "Deploying with env vars: $UPDATE_ENV_VARS_ARG"
-#          gcloud functions deploy budget_alert_endpoint \
-#            --source=. \
-#            --runtime=python39 \
-#            --entry-point=budget_alert_endpoint \
-#            --memory 128MB \
-#            --trigger-http \
-#            --allow-unauthenticated \
-#            --update-env-vars $UPDATE_ENV_VARS_ARG \
-#            --stage-bucket=firebase_code_bucket
+      - name: Delete old images from Amazon ECR
+        run: |
+          # Get the list of image digests, sorted by creation date
+          ALL_IMAGES=$(aws ecr describe-images --repository-name $ECR_REPOSITORY --query 'sort_by(imageDetails,&imagePushedAt)[*].imageDigest' --output text)
+          
+          # Exclude the latest image from the list
+          OLD_IMAGES=$(echo "$ALL_IMAGES" | head -n -1)
+          
+          # Delete the images
+          for image in $OLD_IMAGES; do
+            aws ecr batch-delete-image --repository-name $ECR_REPOSITORY --image-ids imageDigest=$image
+          done
+          env:
+          ECR_REPOSITORY: docker-lambda
+          AWS_REGION: us-east-2
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
